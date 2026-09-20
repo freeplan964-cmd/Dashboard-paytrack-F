@@ -57,7 +57,7 @@ jobs:
           NEXT_TELEMETRY_DISABLED: 1
 
       - name: Cache build
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next
           key: ${{ runner.os }}-nextjs-${{ github.sha }}

@@ -6,6 +6,7 @@
 
 # Dependencies
 node_modules/
+pnpm-debug.log*
 /node_modules
 /.pnp
 .pnp.js

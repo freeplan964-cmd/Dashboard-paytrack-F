@@ -67,9 +67,8 @@ export const appConfig = {
     },
 
     // Deduction categories
-    deductionFields: ['tax', 'insurance', 'loan'],
+    deductionFields: ['insurance', 'loan'],
     deductionDefaults: {
-      tax: 0,
       insurance: 0,
       loan: 0,
     },
@@ -96,7 +95,6 @@ export const appConfig = {
         medical: '',
       },
       deductions: {
-        tax: '',
         insurance: '',
         loan: '',
       },

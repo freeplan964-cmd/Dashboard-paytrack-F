@@ -13,7 +13,6 @@ const allowanceFields = z.object({
   medical: moneyField,
 })
 const deductionFields = z.object({
-  tax: moneyField,
   insurance: moneyField,
   loan: moneyField,
 })
@@ -26,7 +25,7 @@ export const employeeSchema = z.object({
   department: z.string().trim().min(2).max(80),
   baseSalary: z.coerce.number().positive(),
   allowances: allowanceFields.default({ housing: 0, transport: 0, medical: 0 }),
-  deductions: deductionFields.default({ tax: 0, insurance: 0, loan: 0 }),
+  deductions: deductionFields.default({ insurance: 0, loan: 0 }),
 })
 
 // Employee with ID (for responses)
@@ -66,6 +65,7 @@ export const payrollRecordSchema = z.object({
   totalAllowances: z.number().nonnegative(),
   grossSalary: z.number().nonnegative(),
   taxAmount: z.number().nonnegative(),
+  manualDeductions: z.number().nonnegative(),
   totalDeductions: z.number().nonnegative(),
   netSalary: z.number().nonnegative(),
   breakdown: z.object({
@@ -76,10 +76,13 @@ export const payrollRecordSchema = z.object({
   updatedAt: z.date().optional(),
 })
 
-// Environment schema (shared with environment.js)
+// Environment schema (shared with environment.ts)
 export const environmentSchema = z.object({
   MONGO_URL: z.string().min(1),
   DB_NAME: z.string().min(1),
+  AUTH_SECRET: z.string().min(32, 'AUTH_SECRET must be at least 32 characters.'),
+  ADMIN_EMAIL: z.string().email(),
+  ADMIN_PASSWORD_HASH: z.string().min(1),
 })
 
 // Helper function to validate and parse employee data

@@ -7,6 +7,7 @@ import {
   BarChart3,
   CircleDollarSign,
   LayoutDashboard,
+  LogOut,
   Menu,
   Moon,
   Settings,
@@ -165,6 +166,7 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
   const [darkMode, setDarkMode] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [activeNav, setActiveNav] = useState('Overview')
+  const [signingOut, setSigningOut] = useState(false)
 
   useEffect(() => {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -185,6 +187,15 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
       document.documentElement.classList.toggle('dark', next)
       return next
     })
+
+  const handleSignOut = async () => {
+    setSigningOut(true)
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } finally {
+      window.location.href = '/login'
+    }
+  }
 
   // The dashboard page owns its legacy data workspace shell; avoid stacking a second header.
   if (pathname === '/dashboard') return children
@@ -236,6 +247,16 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
               <div className="hidden size-9 place-items-center rounded-full bg-primary/10 text-sm font-semibold text-primary sm:grid">
                 AM
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSignOut}
+                disabled={signingOut}
+                aria-label="Sign out"
+                title="Sign out"
+              >
+                <LogOut aria-hidden="true" className="size-4" />
+              </Button>
             </div>
           </div>
         </header>

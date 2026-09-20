@@ -5,11 +5,21 @@
     <strong>Modern, clear, and secure payroll management.</strong>
   </p>
   <p align="center">
-    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions">CI Status</a>
-    ·
-    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/issues">Report Bug</a>
-    ·
-    <a href="CHANGELOG.md">Changelog</a>
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions/workflows/ci.yml">
+      <img src="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions/workflows/ci.yml/badge.svg" alt="CI" />
+    </a>
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions/workflows/docker-publish.yml">
+      <img src="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions/workflows/docker-publish.yml/badge.svg" alt="Docker Publish" />
+    </a>
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/pkgs/container/paytrack">
+      <img src="https://img.shields.io/badge/ghcr.io-paytrack-blue?logo=docker" alt="GHCR Package" />
+    </a>
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/releases">
+      <img src="https://img.shields.io/github/v/release/Mostafa-SAID7/Dashboard-paytrack-F" alt="Latest Release" />
+    </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License" />
+    </a>
   </p>
 </div>
 
@@ -19,57 +29,80 @@
 
 PayTrack is engineered for stability, clarity, and security without enterprise over-engineering.
 
-* 🔒 **Secure by Default:** Zero-dependency JWT stateless authentication using strict `HttpOnly` cookies and `scrypt` password hashing.
-* 🧮 **Bulletproof Calculations:** Strict separation between manual deductions and statutory tax prevents any double-counting errors. Fully tested with Jest.
-* 🛡️ **End-to-End Type Safety:** Fully typed domain models ensure that the API contracts precisely match the UI requirements.
-* ⚡ **Next.js App Router:** Built on modern Next.js boundaries, organized elegantly into feature modules (`/features/payroll`, `/features/employees`).
-* 🎨 **Clean & Responsive UI:** Powered by Tailwind CSS, Shadcn/UI, and Radix primitives to provide an accessible, beautiful experience across all devices.
+* 🔒 **Secure by Default** — Zero-dependency JWT auth using `HttpOnly` cookies and `scrypt` password hashing.
+* 🧮 **Bulletproof Calculations** — Strict separation between manual deductions and statutory tax. 25 Jest unit tests.
+* 🛡️ **End-to-End Type Safety** — Typed domain models ensure API contracts precisely match the UI.
+* ⚡ **Next.js App Router** — Feature-module architecture (`/features/payroll`, `/features/employees`).
+* 🎨 **Clean & Responsive UI** — Tailwind CSS + Shadcn/UI + Radix primitives. Accessible across all devices.
+* 🐳 **Docker-Ready** — Multi-stage build, non-root user, health check, published to GHCR automatically.
 
-## 🚀 Quick Start
+---
+
+## 🐳 Docker (Quickest Start)
+
+```bash
+# 1. Pull the image from GitHub Container Registry
+docker pull ghcr.io/mostafa-said7/paytrack:latest
+
+# 2. Copy and fill in your secrets
+cp .env.docker.example .env.docker
+
+# 3. Start the full stack (app + MongoDB)
+docker compose up
+```
+
+> The app will be available at **http://localhost:3000**
+
+---
+
+## 🚀 Local Development
 
 ### Prerequisites
-* **Node.js** 24 or newer
-* **pnpm** (recommended for dependency management)
+* **Node.js** 24+
+* **pnpm** (installed via `corepack enable`)
 * **MongoDB** (local or hosted URI)
 
-### Local Development
+### Setup
 
-1. **Install dependencies:**
-   ```bash
-   pnpm install
-   ```
+```bash
+# Install dependencies
+pnpm install
 
-2. **Configure environment:**
-   Copy the example config and adjust your MongoDB URI and Auth secrets.
-   ```bash
-   cp .env.example .env
-   ```
+# Configure environment
+cp .env.example .env
 
-3. **Run the development server:**
-   ```bash
-   pnpm dev
-   ```
-   *Visit [http://localhost:3000](http://localhost:3000) to view the application.*
+# Start the dev server
+pnpm dev
+```
+
+*Visit [http://localhost:3000](http://localhost:3000)*
+
+---
 
 ## 🧪 Testing & Validation
 
-PayTrack ensures correctness through continuous typechecking and mathematical unit testing.
-
 ```bash
-# Run unit tests (Jest)
+# Run unit tests (Jest — 25 tests)
 pnpm test
 
-# Run TypeScript typechecker
+# TypeScript typechecker
 pnpm typecheck
 ```
 
-## 🏗️ Architecture Overview
+---
 
-The repository enforces clean architectural boundaries:
-- **`app/`**: Next.js App Router endpoints and pages.
-- **`features/`**: Domain logic (Payroll calculation, Employee models).
-- **`lib/`**: Infrastructure utilities (Database, Auth tokens, API error handling).
-- **`components/`**: Reusable React UI primitives (Shadcn/UI).
+## 🏗️ Architecture
+
+```
+app/            Next.js App Router (pages + API routes)
+features/       Domain logic  (payroll calculator, employee models)
+lib/            Infrastructure (auth tokens, DB client, API errors)
+components/     UI primitives (Shadcn/UI)
+config/         Centralized env validation + app configuration
+```
+
+---
 
 ## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
+
+[MIT](LICENSE) © PayTrack

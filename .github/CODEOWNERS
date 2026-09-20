@@ -1,0 +1,20 @@
+# Default owners for repository
+
+* @Mostafa-SAID7
+
+# Specific component owners
+/app/ @Mostafa-SAID7
+/features/ @Mostafa-SAID7
+/config/ @Mostafa-SAID7
+/lib/ @Mostafa-SAID7
+/public/ @Mostafa-SAID7
+
+# Documentation
+*.md @Mostafa-SAID7
+/docs/ @Mostafa-SAID7
+
+# Configuration files
+*.json @Mostafa-SAID7
+*.js @Mostafa-SAID7
+*.yml @Mostafa-SAID7
+*.yaml @Mostafa-SAID7

@@ -1,9 +1,4 @@
-import { z } from 'zod'
-
-const environmentSchema = z.object({
-  MONGO_URL: z.string().min(1),
-  DB_NAME: z.string().min(1),
-})
+import { environmentSchema } from './schemas'
 
 export function getEnvironment() {
   const result = environmentSchema.safeParse({
@@ -19,3 +14,4 @@ export function getEnvironment() {
 }
 
 export const isProduction = process.env.NODE_ENV === 'production'
+export const isDevelopment = process.env.NODE_ENV === 'development'

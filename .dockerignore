@@ -1,15 +1,45 @@
-node_modules
-.next
+# ── Files never needed inside the Docker build context ────────────────────────
+
+# Source control
 .git
+.gitignore
 .github
+
+# Environment files — secrets must NEVER be baked into the image
+.env
+.env.local
+.env.*.local
+.env.docker
+# Allow the example files (no real secrets)
+!.env.example
+!.env.docker.example
+
+# Dev tooling
 .vscode
 .idea
+.agent
+
+# Build outputs (will be rebuilt inside Docker)
+.next
+node_modules
+
+# Test artifacts
 coverage
-*.log
-.env*
-!.env.example
-Dockerfile
-docker-compose*.yml
+*.test.ts
+jest.config.ts
+
+# Docs
 README.md
 CHANGELOG.md
+LICENSE
 
+# Docker files themselves (not needed inside container)
+Dockerfile
+docker-compose*.yml
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# TypeScript build info (regenerated during build)
+tsconfig.tsbuildinfo

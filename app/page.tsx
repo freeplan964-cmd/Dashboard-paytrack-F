@@ -150,6 +150,7 @@ export default function PayTrackApp() {
   const [form, setForm] = useState(emptyForm)
   const [open, setOpen] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [darkMode, setDarkMode] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -157,6 +158,7 @@ export default function PayTrackApp() {
   const load = async () => {
     try {
       setError('')
+      setLoading(true)
       const [employeeData, payrollData, statsData] = await Promise.all([
         apiRequest('/api/employees'),
         apiRequest(`/api/payroll?period=${period}`),
@@ -167,6 +169,8 @@ export default function PayTrackApp() {
       setStats(statsData)
     } catch (err) {
       setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 

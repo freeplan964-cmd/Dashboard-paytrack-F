@@ -1,0 +1,3 @@
+import { getDatabase } from '@/lib/db/client'
+import { jsonError, jsonSuccess } from '@/lib/api/errors'
+export async function GET() { try { const db = await getDatabase(); const [totalEmployees, records] = await Promise.all([db.collection('employees').countDocuments(), db.collection('payroll_records').find({}).toArray()]); const totalPayroll = records.reduce((sum, record) => sum + (record.netSalary || 0), 0); return jsonSuccess({ totalEmployees, totalPayroll, avgSalary: records.length ? totalPayroll / records.length : 0, processedRecords: records.length }) } catch (error) { return jsonError(error) } }

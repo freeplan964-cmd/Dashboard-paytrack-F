@@ -6,7 +6,7 @@ export const viewport = appConfig.viewport
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   )

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import {
   BarChart3,
@@ -120,8 +121,10 @@ function Sidebar({ mobile, open, onClose, activeNav, onNavigate }) {
   )
 }
 
+const navRoutes = { Overview: '/dashboard', Employees: '/employees', Payroll: '/payroll', Analytics: '/analytics', Settings: '/settings' }
+
 function SidebarNav({ activeNav, onNavigate }) {
-  return <nav className="flex flex-col gap-1" aria-label="Primary navigation">{navItems.map(([Icon, label]) => <Button key={label} type="button" variant={activeNav === label ? 'secondary' : 'ghost'} onClick={() => onNavigate(label)} className="justify-start gap-3"><Icon aria-hidden="true" className="size-4" />{label}</Button>)}</nav>
+  return <nav className="flex flex-col gap-1" aria-label="Primary navigation">{navItems.map(([Icon, label]) => <Button key={label} asChild variant={activeNav === label ? 'secondary' : 'ghost'} className="justify-start gap-3"><Link href={navRoutes[label]} onClick={() => onNavigate(label)}><Icon aria-hidden="true" className="size-4" />{label}</Link></Button>)}</nav>
 }
 
 function StatCard({ label, value, detail, icon: Icon }) {

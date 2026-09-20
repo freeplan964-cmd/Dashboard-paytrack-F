@@ -1,148 +1,75 @@
-# PayTrack
+<div align="center">
+  <img src="https://img.icons8.com/color/96/000000/receive-cash.png" alt="PayTrack Logo" width="80" height="80">
+  <h1 align="center">PayTrack Dashboard</h1>
+  <p align="center">
+    <strong>Modern, clear, and secure payroll management.</strong>
+  </p>
+  <p align="center">
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions">CI Status</a>
+    ·
+    <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/issues">Report Bug</a>
+    ·
+    <a href="CHANGELOG.md">Changelog</a>
+  </p>
+</div>
 
-<p align="center">
-  <strong>Payroll operations, made clear.</strong><br />
-  A focused dashboard for managing employees, payroll periods, and operational insights.
-</p>
+<hr />
 
-<p align="center">
-  <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/actions">CI</a>
-  ·
-  <a href="https://github.com/Mostafa-SAID7/Dashboard-paytrack-F/issues">Issues</a>
-  ·
-  <a href="CHANGELOG.md">Changelog</a>
-</p>
+## ✨ Key Focus Points
 
-## What PayTrack focuses on
+PayTrack is engineered for stability, clarity, and security without enterprise over-engineering.
 
-- **One operational view** for payroll health, employee totals, and current-period activity.
-- **Reliable calculations** with shared validation schemas and a centralized payroll domain calculator.
-- **Responsive workflows** that remain usable across desktop, tablet, and mobile layouts.
-- **Accessible interface primitives** powered by shadcn/ui, Radix UI, semantic HTML, and keyboard-friendly controls.
-- **Maintainable foundations** with TypeScript, feature-oriented modules, centralized configuration, and API boundaries.
+* 🔒 **Secure by Default:** Zero-dependency JWT stateless authentication using strict `HttpOnly` cookies and `scrypt` password hashing.
+* 🧮 **Bulletproof Calculations:** Strict separation between manual deductions and statutory tax prevents any double-counting errors. Fully tested with Jest.
+* 🛡️ **End-to-End Type Safety:** Fully typed domain models ensure that the API contracts precisely match the UI requirements.
+* ⚡ **Next.js App Router:** Built on modern Next.js boundaries, organized elegantly into feature modules (`/features/payroll`, `/features/employees`).
+* 🎨 **Clean & Responsive UI:** Powered by Tailwind CSS, Shadcn/UI, and Radix primitives to provide an accessible, beautiful experience across all devices.
 
-## Product areas
+## 🚀 Quick Start
 
-| Area | Purpose |
-| --- | --- |
-| Overview | Review payroll totals, active employees, and recent activity. |
-| Employees | Add, search, and manage employee records. |
-| Payroll | Inspect payroll periods and calculate compensation details. |
-| Analytics | Review department-level operational data. |
-| Settings | Access application preferences and theme controls. |
+### Prerequisites
+* **Node.js** 24 or newer
+* **pnpm** (recommended for dependency management)
+* **MongoDB** (local or hosted URI)
 
-## Technology
+### Local Development
 
-- Next.js App Router
-- React and TypeScript
-- Tailwind CSS
-- shadcn/ui with Radix UI
-- Zod validation
-- MongoDB
-- Recharts and Lucide icons
+1. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
 
-## Quick start
+2. **Configure environment:**
+   Copy the example config and adjust your MongoDB URI and Auth secrets.
+   ```bash
+   cp .env.example .env
+   ```
 
-### Requirements
+3. **Run the development server:**
+   ```bash
+   pnpm dev
+   ```
+   *Visit [http://localhost:3000](http://localhost:3000) to view the application.*
 
-- Node.js 18 or newer
-- Yarn 1.22
-- MongoDB, local or hosted
+## 🧪 Testing & Validation
 
-### Install and configure
-
-```bash
-git clone https://github.com/Mostafa-SAID7/Dashboard-paytrack-F.git
-cd Dashboard-paytrack-F
-yarn install
-cp .env.example .env.development.local
-```
-
-Update `.env.development.local` with the MongoDB connection used by your environment:
-
-```env
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=paytrack
-```
-
-### Run locally
+PayTrack ensures correctness through continuous typechecking and mathematical unit testing.
 
 ```bash
-yarn dev
+# Run unit tests (Jest)
+pnpm test
+
+# Run TypeScript typechecker
+pnpm typecheck
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## 🏗️ Architecture Overview
 
-## Available commands
+The repository enforces clean architectural boundaries:
+- **`app/`**: Next.js App Router endpoints and pages.
+- **`features/`**: Domain logic (Payroll calculation, Employee models).
+- **`lib/`**: Infrastructure utilities (Database, Auth tokens, API error handling).
+- **`components/`**: Reusable React UI primitives (Shadcn/UI).
 
-| Command | Description |
-| --- | --- |
-| `yarn dev` | Start the development server on port 3000. |
-| `yarn dev:no-reload` | Start development without the custom memory option. |
-| `yarn dev:webpack` | Start the development server with the webpack command. |
-| `yarn typecheck` | Run TypeScript without emitting files. |
-| `yarn build` | Create a production build. |
-| `yarn start` | Serve the production build. |
-
-## Project structure
-
-```text
-app/                 App Router pages and API route handlers
-components/ui/       Shared accessible UI primitives
-config/              Application metadata, defaults, and validation rules
-features/             Domain schemas and payroll calculation logic
-hooks/                Reusable client hooks
-lib/                  Database, HTTP, error, and utility modules
-public/                Static brand assets
-.github/              CI, release, contribution, and issue workflows
-```
-
-## API surface
-
-- `GET /api/employees` — list employees
-- `POST /api/employees` — create an employee
-- `GET /api/payroll?period=YYYY-MM` — retrieve payroll for a period
-- `POST /api/payroll` — create or update payroll data
-- `POST /api/payroll/calculate` — validate and calculate payroll values
-- `GET /api/dashboard/stats` — retrieve dashboard summary metrics
-- `GET /api/analytics/departments` — retrieve department analytics
-
-All request validation belongs in the shared schemas under `config/` and `features/`. Keep route handlers thin and keep business rules in domain modules.
-
-## Quality and delivery
-
-Pull requests are checked through the workflows in `.github/workflows/`:
-
-- CI installs locked dependencies and verifies the application build.
-- Release automation builds tagged versions and publishes GitHub releases.
-- Dependabot keeps dependency updates visible for review.
-
-Before opening a pull request, run:
-
-```bash
-yarn typecheck
-yarn build
-```
-
-For UI changes, verify both a wide viewport and a mobile viewport, including keyboard navigation, readable contrast, and the open/closed mobile sidebar states.
-
-## Configuration principles
-
-- Keep application metadata and UI defaults in `config/app.ts`.
-- Keep environment parsing in `config/environment.ts`.
-- Keep shared validation in `config/schemas.ts` and feature schemas.
-- Keep database access behind `lib/db/client.ts`.
-- Avoid adding duplicate constants, route logic, or styling systems when an existing shared module already provides the behavior.
-
-## Contributing
-
-Read [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md) before contributing. Use the pull request template, describe user-visible changes clearly, and update [`CHANGELOG.md`](CHANGELOG.md) when behavior or release notes change.
-
-## License
-
-This project is maintained by Mostafa-SAID7. Licensing terms should be added before distributing the application outside the repository.
-
----
-
-Built for clear, dependable payroll operations.
-
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).

@@ -9,6 +9,10 @@ export const appConfig = {
     title: 'PayTrack | Payroll operations',
     description: 'A clear, modern workspace for employee payroll management.',
     applicationName: 'PayTrack',
+    keywords: ['payroll management', 'employee payroll', 'payroll operations', 'team compensation'],
+    authors: [{ name: 'PayTrack' }],
+    creator: 'PayTrack',
+    category: 'business',
     brand: {
       name: 'PayTrack',
       tagline: 'Payroll operations',

@@ -12,7 +12,3 @@ export function PageShell({ title, eyebrow, description, children }: { title: st
     </div>
   )
 }
-
-export function ComingSoon({ title, detail }: { title: string; detail: string }) {
-  return <section className="rounded-3xl border border-border/70 bg-card p-8 shadow-sm"><h2 className="text-xl font-semibold">{title}</h2><p className="mt-3 max-w-xl leading-7 text-muted-foreground">{detail}</p><p className="mt-6 inline-flex rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">Session access required</p></section>
-}

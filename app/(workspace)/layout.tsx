@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import {
   BarChart3,
   CircleDollarSign,
@@ -160,6 +161,7 @@ function WorkspaceSidebar({
 }
 
 export default function WorkspaceLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   const [darkMode, setDarkMode] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [activeNav, setActiveNav] = useState('Overview')
@@ -183,6 +185,9 @@ export default function WorkspaceLayout({ children }: { children: React.ReactNod
       document.documentElement.classList.toggle('dark', next)
       return next
     })
+
+  // The dashboard page owns its legacy data workspace shell; avoid stacking a second header.
+  if (pathname === '/dashboard') return children
 
   return (
     <div className="min-h-screen bg-muted/30">

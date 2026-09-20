@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { CircleDollarSign, Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { appConfig } from '@/config/app'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -34,7 +35,8 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/dashboard')
+      const next = searchParams.get('next')
+      router.push(next?.startsWith('/') && !next.startsWith('//') ? next : '/dashboard')
       router.refresh()
     } catch {
       setError('A network error occurred. Please check your connection.')

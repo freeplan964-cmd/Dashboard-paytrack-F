@@ -1,45 +1,59 @@
 import { getDatabase } from '@/lib/db/client'
 import { jsonError, jsonSuccess } from '@/lib/api/errors'
 import { requireSession } from '@/lib/auth/require-session'
+import { periodSchema } from '@/config/schemas'
+import { getDefaultPeriod } from '@/config/app'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   try {
     requireSession()
-    const period = new URL(request.url).searchParams.get('period')
+    const requestedPeriod = new URL(request.url).searchParams.get('period')
+    const period = periodSchema.parse(requestedPeriod || getDefaultPeriod())
     const db = await getDatabase()
+    const departments = await db.collection('employees').aggregate([
+      {
+        $lookup: {
+          from: 'payroll_records',
+          let: { employeeId: '$id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$employeeId', '$$employeeId'] },
+                    { $eq: ['$period', period] },
+                  ],
+                },
+              },
+            },
+            { $project: { _id: 0, netSalary: 1 } },
+            { $limit: 1 },
+          ],
+          as: 'payroll',
+        },
+      },
+      {
+        $group: {
+          _id: '$department',
+          employeeCount: { $sum: 1 },
+          totalSalary: { $sum: { $ifNull: [{ $arrayElemAt: ['$payroll.netSalary', 0] }, 0] } },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          department: '$_id',
+          employeeCount: 1,
+          totalSalary: 1,
+          avgSalary: { $divide: ['$totalSalary', '$employeeCount'] },
+        },
+      },
+      { $sort: { department: 1 } },
+    ]).toArray()
 
-    const [employees, records] = await Promise.all([
-      db.collection('employees').find({}).toArray(),
-      db.collection('payroll_records').find(period ? { period } : {}).sort({ createdAt: -1 }).toArray(),
-    ])
-
-    const grouped: Record<string, {
-      department: string
-      employeeCount: number
-      totalSalary: number
-      avgSalary: number
-    }> = {}
-
-    for (const employee of employees) {
-      const group = (grouped[employee.department] ??= {
-        department: employee.department,
-        employeeCount: 0,
-        totalSalary: 0,
-        avgSalary: 0,
-      })
-      group.employeeCount++
-      const payroll = records.find((record) => record.employeeId === employee.id)
-      group.totalSalary += payroll?.netSalary || 0
-    }
-
-    return jsonSuccess(
-      Object.values(grouped).map((group) => ({
-        ...group,
-        avgSalary: group.employeeCount ? group.totalSalary / group.employeeCount : 0,
-      }))
-    )
+    return jsonSuccess(departments)
   } catch (error) {
     return jsonError(error)
   }

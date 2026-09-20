@@ -107,7 +107,7 @@ pnpm install
 
 # 2 — Configure
 cp .env.example .env
-# → Fill in MONGODB_URI, AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD_HASH
+# → Fill in MONGO_URL, DB_NAME, AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD_HASH
 
 # 3 — Run
 pnpm dev
